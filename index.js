@@ -60,13 +60,21 @@ const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max))
 app.post('/api/persons', (req, res) => {
   const note = req.body
   const id = getRandomInt(100)
-  const newNote = {
-    name: note.name,
-    number: note.number,
-    id: id
+  if (!note.name) {
+    res.status(500).send('Request must contain a name')
+  } else if (!note.number) {
+    res.status(500).send('Request must contain a number')
+  } else if (notes.filter(n => n.name === note.name).length > 0) {
+    res.status(500).send('Name must be unique')
+  } else {
+    const newNote = {
+      name: note.name,
+      number: note.number,
+      id: id
+    }
+    notes = notes.concat(newNote)
+    res.json(note)
   }
-  notes = notes.concat(newNote)
-  res.json(note)
 })
 
 const PORT = 3001
