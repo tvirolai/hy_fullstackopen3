@@ -84,13 +84,21 @@ app.post('/api/persons', (req, res) => {
     id: getRandomInt(100)
   }
   console.log(person)
-  const p = new Person(person)
-  p
-    .save()
+  Person
+    .find({name: person.name})
     .then(resp => {
-      console.log("Person saved.")
-      mongoose.connection.close()
-      res.json(person)
+      if (resp.length > 0) {
+        res.status(400).send({ error: `${person.name} already in database` })
+      } else {
+        const p = new Person(person)
+        p
+          .save()
+          .then(resp => {
+            console.log("Person saved.")
+            mongoose.connection.close()
+            res.json(person)
+          })
+      }
     })
   // if (!note.name) {
   //   res.status(500).send('Request must contain a name')
