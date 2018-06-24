@@ -29,7 +29,11 @@ app.get('/api/persons', (req, res) => {
 })
 
 app.get('/info', (req, res) => {
-  res.send(`<p>Puhelinluettelossa ${notes.length} henkilön tiedot</p><p>${new Date()}</p>`)
+  Person
+    .count()
+    .then(result => {
+      res.send(`<p>Puhelinluettelossa ${result} henkilön tiedot</p><p>${new Date()}</p>`)
+    })
 })
 
 app.get('/api/:id', (req, res) => {
