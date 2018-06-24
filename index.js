@@ -59,6 +59,20 @@ app.delete('/api/:id', (req, res) => {
 
 const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max))
 
+app.put('/api/:id', (req, res) => {
+  const id = Number(req.params.id)
+  Person
+    .updateOne({id: id}, {$set: {number: req.body.number}})
+    .then(result => {
+      console.log(`Successfully updated document ${id}`)
+      res.status(204).end()
+    })
+    .catch(err => {
+      console.log(`Error: ${err}`)
+      res.status(400).send({ error: 'something wrong' })
+    })
+})
+
 app.post('/api/persons', (req, res) => {
   const person = {
     name: req.body.name,
