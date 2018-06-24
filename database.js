@@ -6,12 +6,14 @@ mongoose.connect(url)
 
 const Person = mongoose.model('Person', {
   name: String,
-  number: String
+  number: String,
+  id: Number
 })
 
 const personSchema = new mongoose.Schema({
   name: String,
-  number: String
+  number: String,
+  number: Number
 })
 
 // 3.14

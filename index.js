@@ -44,8 +44,17 @@ app.get('/api/:id', (req, res) => {
 
 app.delete('/api/:id', (req, res) => {
   const id = Number(req.params.id)
-  notes = notes.filter(note => note.id !== id)
-  res.status(204).end()
+  Person
+    // .findByIdAndRemove(id)
+    .deleteOne({ id: id })
+    .then(result => {
+      console.log(`Successfully deleted document ${id}`)
+      res.status(204).end()
+    })
+    .catch(err => {
+      console.log(`Error: ${err}`)
+      res.status(400).send({ error: 'something wrong' })
+    })
 })
 
 const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max))
@@ -56,6 +65,7 @@ app.post('/api/persons', (req, res) => {
     number: req.body.number,
     id: getRandomInt(100)
   }
+  console.log(person)
   const p = new Person(person)
   p
     .save()
