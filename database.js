@@ -9,4 +9,17 @@ const Person = mongoose.model('Person', {
   number: String
 })
 
+const personSchema = new mongoose.Schema({
+  name: String,
+  number: String
+})
+
+// 3.14
+// personSchema.statics.format = function (p) {
+//   return {
+//     name: p.name,
+//     number: p.number
+//   }
+// }
+
 module.exports = Person

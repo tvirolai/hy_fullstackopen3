@@ -51,23 +51,26 @@ app.delete('/api/:id', (req, res) => {
 const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max))
 
 app.post('/api/persons', (req, res) => {
-  const note = req.body
-  const id = getRandomInt(100)
-  if (!note.name) {
-    res.status(500).send('Request must contain a name')
-  } else if (!note.number) {
-    res.status(500).send('Request must contain a number')
-  } else if (notes.filter(n => n.name === note.name).length > 0) {
-    res.status(500).send('Name must be unique')
-  } else {
-    const newNote = {
-      name: note.name,
-      number: note.number,
-      id: id
-    }
-    notes = notes.concat(newNote)
-    res.json(note)
+  const person = {
+    name: req.body.name,
+    number: req.body.number,
+    id: getRandomInt(100)
   }
+  const p = new Person(person)
+  p
+    .save()
+    .then(resp => {
+      console.log("Person saved.")
+      mongoose.connection.close()
+      res.json(person)
+    })
+  // if (!note.name) {
+  //   res.status(500).send('Request must contain a name')
+  // } else if (!note.number) {
+  //   res.status(500).send('Request must contain a number')
+  // } else if (notes.filter(n => n.name === note.name).length > 0) {
+  //   res.status(500).send('Name must be unique')
+  // } else {
 })
 
 const PORT = process.env.PORT || 3001
